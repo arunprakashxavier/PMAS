@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - PMA System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      background-color: #ffe6e6;  /* Light pink background */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .register-container {
+      background-color: white;
+      padding: 40px;  /* Increased padding */
+      border-radius: 15px;  /* More rounded corners */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      margin-top: 30px;
+    }
+
+    h4.text-primary {
+      color: #e83e8c;  /* Pink heading */
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    label {
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 5px;
+    }
+    .form-label {
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 5px;
+    }
+
+    .form-control,
+    .btn {
+      border-radius: 8px;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+      border: 1px solid #ced4da;
+    }
+
+    .form-control:focus {
+      border-color: #e83e8c;
+      box-shadow: 0 0 0 0.25rem rgba(232, 62, 140, 0.25);
+      outline: none;
+    }
+
+    /* Radio button styling */
+    .form-control label {
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    /* Button Styling and Hover Effects */
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary:hover::after{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.3); /* White glow */
+      z-index: -1; /* Place behind the button text */
+      border-radius: 8px;
+      animation: glow 1.5s infinite;
+    }
+
+    @keyframes glow {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+      100% { opacity: 0.3; }
+    }
+    /* Textarea styling */
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+    /* Alert Styling */
+    .alert {
+      border-radius: 8px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+    }
+
+    .login a {
+      color: #e83e8c;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .login a:hover {
+      text-decoration: underline;
+      color: #bf3072;
+    }
+    #error-message {
+      margin-bottom: 1rem; /* Add some space below the error message */
+    }
+
+  </style>
+</head>
+
+<body class="m-3">
+<div class="register-container container d-flex justify-content-center">
+  <div class="col-sm-12 col-md-12">
+    <header>
+      <h4 class="text-primary text-center">
+        <strong>Patient Registration</strong>
+      </h4>
+    </header>
+    <section>
+      <div class="register">
+        <div th:if="${param.success}" class="success-message">
+          <div class="alert alert-success">
+            You are successfully registered! <br />
+            Your phone number is your username.
+          </div>
+        </div>
+        <div th:if="${param.mobileAlreadyExists}" class="mobileAlreadyExists-message">
+          <div class="alert alert-danger">
+            A patient already exists in provided mobile number.<br />
+            Enter a valid one.
+          </div>
+        </div>
+        <div class="register-form">
+          <form action="#" onsubmit="return validatePassword()"
+                th:action="@{/web/patients/savePatient}" th:object="${newPatient}" method="post">
+            <div class="mb-3">
+              <label for="first-name" class="form-label"><strong>First name</strong></label>
+              <input id="first-name" class="form-control" type="text" placeholder="John"
+                     th:field="*{firstName}" required autofocus="autofocus" />
+            </div>
+
+            <div class="mb-3">
+              <label for="last-name" class="form-label"><strong>Last name</strong></label>
+              <input id="last-name" class="form-control" type="text" placeholder="Doe"
+                     th:field="*{lastName}" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label"><strong>Email</strong></label>
+              <input id="email" class="form-control" type="email" placeholder="jdoe@gmail.com"
+                     th:field="*{email}" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label"><strong>Phone</strong></label>
+              <input id="phone" class="form-control" type="text" placeholder="9876543210"
+                     th:field="*{mobile}" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="address" class="form-label"><strong>Address</strong></label>
+              <input id="address" class="form-control" type="text" placeholder="Georgetown, USA"
+                     th:field="*{address}" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="age" class="form-label"><strong>Age</strong></label>
+              <input id="age" class="form-control" type="number" placeholder="25" th:field="*{age}"
+                     required min="1" />
+            </div>
+
+            <div class="mb-3">
+              <span><strong>Gender</strong></span>
+              <div class="form-control">
+                <label><input id="genderMale" type="radio" name="gender" placeholder="1"
+                              th:field="*{gender}" value="Male" required />Male</label>
+                <label><input id="genderFemale" type="radio" name="gender" placeholder="2"
+                              th:field="*{gender}" value="Female" required />Female</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="bloodgroup" class="form-label"><strong>Bloodgroup</strong></label>
+              <input id="bloodgroup" class="form-control" type="text" placeholder="A1+"
+                     th:field="*{bloodGroup}" required />
+            </div>
+            <span class="text-primary"><strong>Emergency contact details:</strong></span><br />
+
+            <div class="mb-3">
+              <label for="emergencyContactName" class="form-label"><strong>Name</strong></label>
+              <input id="emergencyContactName" class="form-control" type="text" placeholder="Johanna"
+                     th:field="*{emergencyContactName}" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="emergencyContactMobile" class="form-label"><strong>Mobile</strong></label>
+              <input id="emergencyContactMobile" class="form-control" type="text" placeholder="9876543211"
+                     th:field="*{emergencyContactMobile}" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="emergencyContactRelation" class="form-label"><strong>Relation</strong></label>
+              <input id="emergencyContactRelation" class="form-control" type="text" placeholder="Sister"
+                     th:field="*{emergencyContactRelation}" required />
+            </div>
+            <span class="text-primary"><strong>Medical History:</strong></span><br />
+
+            <div class="mb-3">
+              <label for="previousDiagnoses" class="form-label"><strong>Previous
+                Diagnoses</strong></label>
+              <textarea id="previousDiagnoses" class="form-control" type="text"
+                        placeholder="Diagnosed with Asthma since past 6 years." th:field="*{previousDiagnoses}"
+                        required></textarea>
+            </div>
+
+            <div class="mb-3">
+
+              <label for="surgeries" class="form-label"><strong>Surgeries</strong></label>
+              <textarea id="surgeries" class="form-control" type="text"
+                        placeholder="Operated for a broken little finger bone." th:field="*{surgeries}"
+                        required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="allergies" class="form-label"><strong>Allergies</strong></label>
+              <textarea id="allergies" class="form-control" type="text" placeholder="Allergic to milk."
+                        th:field="*{allergies}" required></textarea>
+            </div>
+            <div class="mb-3">
+
+              <label for="vaccinationHistory" class="form-label"><strong>Vaccination
+                History</strong></label>
+              <textarea id="vaccinationHistory" class="form-control" type="text"
+                        placeholder="Covishield First dosage on June 2021 and second dosage on 2024."
+                        th:field="*{vaccinationHistory}" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <span><strong>Do you smoke?</strong></span>
+              <div class="form-control">
+                <label><input id="isSmokerYes" type="radio" name="isSmoker" placeholder="1"
+                              th:field="*{isSmoker}" value="true" required />Yes</label>
+                <label><input id="isSmokerNo" type="radio" name="isSmoker" placeholder="2"
+                              th:field="*{isSmoker}" value="false" required />No</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <span><strong>Do you consume alcohol?</strong></span>
+              <div class="form-control">
+                <label><input id="consumesAlcoholYes" type="radio" name="consumesAlcohol"
+                              th:field="*{consumesAlcohol}" value="true" required />Yes</label>
+                <label><input id="consumesAlcoholNo" type="radio" name="consumesAlcohol"
+                              th:field="*{consumesAlcohol}" value="false" required />No</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label"><strong>Password</strong></label>
+              <input id="password" class="form-control" type="password" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="password2" class="form-label"><strong>Confirm password</strong></label>
+              <input id="password2" class="form-control" type="password" th:field="*{password}"
+                     required />
+            </div>
+            <span id="error-message" class="text-center" style="color: red; display: none">Error!</span>
+
+            <button type="submit" class="btn btn-primary w-100">Sign up</button>
+          </form>
+        </div>
+      </div>
+      <div class="login text-center mt-3">
+        Already registered?
+        <a th:href="@{/web/patients/login}">Login here!</a>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+  function validatePassword() {
+    console.log("Validating password..");
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("password2").value;
+    const errorMessage = document.getElementById("error-message");
+
+    const passwordPattern =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+
+    if (!passwordPattern.test(password)) {
+      console.log("Pattern does not match with password:");
+
+      const text =
+              "Password should have at least 8 characters, at least one capital letter, at least one small, at least one number and at least one special character.";
+      console.log(text);
+      errorMessage.textContent = text;
+      errorMessage.style.display = "block";
+      return false;
+    }
+    console.log("Pattern matches with password:");
+
+    if (password != confirmPassword) {
+      const text = "Password and Confirm password do not match.";
+      console.log(text);
+      errorMessage.textContent = text;
+      // Show error message
+      errorMessage.style.display = "block";
+      return false;
+    }
+    // Hide error message
+    errorMessage.style.display = "none";
+    return true;
+  }
+</script>
+</body>
+
+</html>

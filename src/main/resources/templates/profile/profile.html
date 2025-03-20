@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      background-color: #ffe6e6;  /* Light pink background */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      max-width: 800px; /* Set a maximum width for the container */
+      margin-top: 30px;
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h4.text-primary {
+      color: #e83e8c;  /* Pink heading */
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .profile-section {
+      margin-bottom: 30px; /* Increased spacing between sections */
+      background: white;
+      border-radius: 12px; /* More rounded corners */
+      padding: 25px; /* Increased padding */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    .profile-section h4 {
+      color: #e83e8c; /* Pink section headings */
+      font-weight: 600;
+      margin-bottom: 15px; /* Space below section heading */
+      border-bottom: 2px solid #e83e8c; /* Underline section headings */
+      padding-bottom: 8px; /* Space below the underline */
+      display: inline-block; /* Keep the underline tight to the text */
+    }
+
+    .profile-info {
+      margin-bottom: 10px; /* Consistent spacing */
+      display: flex;          /* Use flexbox for layout */
+      align-items: center;    /* Vertically center content */
+      flex-wrap: wrap;         /* Allow wrapping on smaller screens */
+    }
+
+    .profile-info .fw-bold {
+      color: #495057;
+      margin-right: 10px;
+      min-width: 150px;   /* Set a minimum width for labels */
+    }
+    .profile-info span:not(.fw-bold) {
+      font-size: 1.05rem; /* Slightly increase value font size */
+      flex-grow: 1;         /* Allow the value to take remaining space */
+    }
+
+  </style>
+</head>
+
+<body class="m-3">
+
+<div class="container d-flex justify-content-center">
+  <div class="col-sm-12 col-md-8">
+    <header>
+      <h4 class="text-center text-primary"><strong>Patient Profile</strong></h4>
+      <p th:replace="~{common/patient-nav-bar::patient-navigation-bar}">Navigation links</p>
+    </header>
+
+    <section>
+      <div class="profile-section">
+        <h4>Personal Information</h4>
+        <div class="profile-info"><span class="fw-bold">ID:</span> <span th:text="${patient.id}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">First Name:</span> <span
+                th:text="${patient.firstName}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">Last Name:</span> <span
+                th:text="${patient.lastName}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">Email:</span> <span
+                th:text="${patient.email}"></span></div>
+        <div class="profile-info"><span class="fw-bold">Mobile:</span> <span
+                th:text="${patient.mobile}"></span></div>
+        <div class="profile-info"><span class="fw-bold">Address:</span> <span
+                th:text="${patient.address}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">Age:</span> <span th:text="${patient.age}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">Gender:</span> <span
+                th:text="${patient.gender}"></span></div>
+        <div class="profile-info"><span class="fw-bold">Blood Group:</span> <span
+                th:text="${patient.bloodGroup}"></span>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h4>Emergency Contact</h4>
+        <div class="profile-info"><span class="fw-bold">Name:</span> <span
+                th:text="${patient.emergencyContactName}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">Mobile:</span> <span
+                th:text="${patient.emergencyContactMobile}"></span></div>
+        <div class="profile-info"><span class="fw-bold">Relation:</span> <span
+                th:text="${patient.emergencyContactRelation}"></span></div>
+      </div>
+      <div class="profile-section">
+        <h4>Medical History</h4>
+        <div class="profile-info"><span class="fw-bold">Previous Diagnoses:</span> <span
+                th:text="${patient.previousDiagnoses}"></span></div>
+        <div class="profile-info"><span class="fw-bold">Surgeries:</span> <span
+                th:text="${patient.surgeries}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">Allergies:</span> <span
+                th:text="${patient.allergies}"></span>
+        </div>
+        <div class="profile-info"><span class="fw-bold">Vaccination History:</span> <span
+                th:text="${patient.vaccinationHistory}"></span></div>
+      </div>
+      <div class="profile-section">
+        <h4>Lifestyle Conditions</h4>
+        <div class="profile-info"><span class="fw-bold">Smoker:</span> <span
+                th:text="${patient.isSmoker} ? 'Yes' : 'No'"></span></div>
+        <div class="profile-info"><span class="fw-bold">Consumes Alcohol:</span> <span
+                th:text="${patient.consumesAlcohol} ? 'Yes' : 'No'"></span></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

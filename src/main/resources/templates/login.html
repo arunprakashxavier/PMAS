@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Medicine Appointment System | Sign in</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      background-color: #ffe6e6;  /* Light pink background */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      max-width: 400px;
+      padding: 40px;  /* Increased padding */
+      background-color: white;
+      border-radius: 15px; /* More rounded corners */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px; /* Increased margin */
+    }
+
+    .login-header h4 {
+      font-weight: bold;
+      color: #e83e8c; /* Pink heading */
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 5px;
+    }
+    .form-control {
+      padding: 10px 15px; /* Consistent padding */
+      border-radius: 8px; /* Consistent border-radius */
+      border: 1px solid #ced4da; /* Consistent border */
+      transition: all 0.3s ease; /* Add transition for focus */
+    }
+
+
+    .form-control:focus {
+      border-color: #e83e8c;
+      box-shadow: 0 0 0 0.25rem rgba(232, 62, 140, 0.25);
+      outline: none;
+    }
+
+    .btn-custom {
+      width: 100%;
+      padding: 10px;
+      background-color: #e83e8c; /* Pink button */
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px; /* Consistent border-radius */
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-custom:hover {
+      transform: translateY(-2px); /* Slight lift */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Subtle shadow */
+      background-color: #e83e8c; /* Keep background color consistent */
+      border-color: #e83e8c;
+    }
+
+    .btn-custom:hover::after{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.3); /* White glow */
+      z-index: -1; /* Place behind the button text */
+      border-radius: 8px;
+      animation: glow 1.5s infinite;
+    }
+
+    @keyframes glow {
+      0% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+
+      100% {
+        opacity: 0.3;
+      }
+    }
+
+
+    .form-text {
+      color: #6c757d;
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 25px; /* Increased margin */
+    }
+
+    .login-footer a {
+      color: #e83e8c; /* Pink link */
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .login-footer a:hover {
+      text-decoration: underline;
+      color: #bf3072; /* Darker pink on hover */
+    }
+
+    /* Style the alert messages */
+    .alert {
+      border-radius: 8px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+    }
+    /* Style error message */
+    .text-danger {
+      text-align: center; /* Center the error message */
+    }
+  </style>
+</head>
+
+<body>
+<div class="login-container">
+  <header class="login-header">
+    <h4>Patient Login</h4>
+  </header>
+
+  <div th:if="${param.logout}" class="logout-message">
+    <div class="alert alert-info">Signed out successfully!</div>
+  </div>
+
+  <form action="#" method="post" th:action="@{/web/patients/login}">
+    <div class="mb-3">
+      <label for="phone" class="form-label">Username</label>
+      <input id="phone" name="username" class="form-control" type="text" placeholder="Enter your phone no."
+             autofocus="autofocus" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input name="password" type="password" class="form-control" placeholder="Enter password" required/>
+    </div>
+
+    <div class="mb-3 text-danger" th:if="${param.error}">
+      <p>Invalid username or password.</p>
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-custom">Login</button>
+    </div>
+  </form>
+
+  <div class="login-footer mt-3">
+    <p>
+      Are you a new patient?
+      <a th:href="@{/web/patients/register}">Register here</a>
+    </p>
+    <p>
+      Are you a new doctor?
+      <a th:href="@{/web/doctors/register}">Register here</a>
+    </p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
